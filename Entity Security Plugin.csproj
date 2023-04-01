@@ -303,6 +303,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="154780088_2104611079681149_8174806859237169231_n.ico" />
+    <Content Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
