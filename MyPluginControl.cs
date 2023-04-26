@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -26,9 +27,8 @@ namespace Entity_Security_Plugin
     {
         private Settings mySettings;
         private List<EntityMetadata> entityList;
-        private List<Entity> rolesList;
-        private List<Entity> prvList;
-        private List<Entity> roleprvList;
+        public List<SecurityPrv> currentListSecPrv;
+
         private string selectedEntity;
 
         public MyPluginControl()
@@ -51,6 +51,8 @@ namespace Entity_Security_Plugin
             {
                 LogInfo("Settings found and loaded");
             }
+
+            this.setTableRoleDefinition();
         }
 
         private void tsbClose_Click(object sender, EventArgs e)
@@ -79,8 +81,9 @@ namespace Entity_Security_Plugin
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-           var filePath = new ExportExcel().Execute(this.tbRoles);
-           MessageBox.Show("Done with :" + filePath);
+            var filePath = new ExportExcel().Execute(this.tbRoles, cbEntities.SelectedValue.ToString());
+            if (!string.IsNullOrEmpty(filePath))
+                MessageBox.Show("Done with :" + filePath);
         }
         #endregion
 
@@ -103,7 +106,7 @@ namespace Entity_Security_Plugin
                     {
                         if (data != null && data.DisplayName != null && data.DisplayName.UserLocalizedLabel != null)
                         {
-                            entityCBdata.Add(data.LogicalName, data.DisplayName.UserLocalizedLabel.Label.ToString());
+                            entityCBdata.Add(data.LogicalName, data.DisplayName.UserLocalizedLabel.Label.ToString() + " (" + data.LogicalName + ")");
                         }
                         else
                         {
@@ -120,8 +123,8 @@ namespace Entity_Security_Plugin
                         MessageBox.Show(args.Error.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     else
                         // Binding result data to ListBox Control
-
                         cbEntities.DataSource = new BindingSource(args.Result, null);
+
                     cbEntities.DisplayMember = "Value";
                     cbEntities.ValueMember = "Key";
                 }
@@ -205,7 +208,7 @@ namespace Entity_Security_Plugin
 
                     Console.WriteLine("Retrieved {0} records", retUserRoles.Entities.Count);
                     //string result = "";
-                    List<SecurityPrv> dataSource = new List<SecurityPrv>();
+                    currentListSecPrv = new List<SecurityPrv>();
 
                     foreach (Entity rur in retUserRoles.Entities)
                     {
@@ -224,12 +227,12 @@ namespace Entity_Security_Plugin
                         SecurityLevel = ((AliasedValue)(rur["RP.privilegedepthmask"])).Value.ToString();
 
 
-                        if (dataSource.Find(t => t.Role.Equals(SecurityRoleName)) == null)
+                        if (currentListSecPrv.Find(t => t.Role.Equals(SecurityRoleName)) == null)
                         {
-                            dataSource.Add(new SecurityPrv(SecurityRoleName));
+                            currentListSecPrv.Add(new SecurityPrv(SecurityRoleName));
                         }
 
-                        dataSource.Find(t => t.Role.Equals(SecurityRoleName)).setLevels(AccessLevel, SecurityLevel);
+                        currentListSecPrv.Find(t => t.Role.Equals(SecurityRoleName)).setLevels(AccessLevel, SecurityLevel);
 
                         //Test
                         //result += "Security Role name:" + rur["name"] + "\n";
@@ -240,9 +243,7 @@ namespace Entity_Security_Plugin
                         //result += "------------------\n";
                     }
 
-                    args.Result = dataSource.OrderBy(t => t.Role).ToList();
-
-
+                    args.Result = currentListSecPrv.OrderBy(t => t.Role).ToList();
                 },
 
                 PostWorkCallBack = (args) =>
@@ -251,6 +252,7 @@ namespace Entity_Security_Plugin
                         MessageBox.Show(args.Error.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     else
                     {
+                        tbRoles.AutoGenerateColumns = false;
                         tbRoles.DataSource = args.Result;
                     }
                 }
@@ -286,6 +288,53 @@ namespace Entity_Security_Plugin
         }
 
         #endregion
+
+        #region UI
+
+        private void setTableRoleDefinition()
+        {
+            byte[] strLevel = Convert.FromBase64String(Constants.Images.NonAccess);
+            MemoryStream ms = new MemoryStream(strLevel);
+            var noneAccess = System.Drawing.Image.FromStream(ms);
+            PictureBox noneAccessPB = new PictureBox();
+            noneAccessPB.Image = noneAccess;
+            noneAccessPB.SizeMode = PictureBoxSizeMode.CenterImage;
+
+            strLevel = Convert.FromBase64String(Constants.Images.UserLevel);
+            ms = new MemoryStream(strLevel);
+            var userLevel = System.Drawing.Image.FromStream(ms);
+            PictureBox userLevelPB = new PictureBox();
+            userLevelPB.Image = userLevel;
+            userLevelPB.SizeMode = PictureBoxSizeMode.CenterImage;
+
+            strLevel = Convert.FromBase64String(Constants.Images.BULevel);
+            ms = new MemoryStream(strLevel);
+            var buLevel = System.Drawing.Image.FromStream(ms);
+            PictureBox buLevelPB = new PictureBox();
+            buLevelPB.Image = buLevel;
+            buLevelPB.SizeMode = PictureBoxSizeMode.CenterImage;
+
+            strLevel = Convert.FromBase64String(Constants.Images.ChildBULevel);
+            ms = new MemoryStream(strLevel);
+            var childBuLevel = System.Drawing.Image.FromStream(ms);
+            PictureBox childBuLevelPB = new PictureBox();
+            childBuLevelPB.Image = childBuLevel;
+            childBuLevelPB.SizeMode = PictureBoxSizeMode.CenterImage;
+
+            strLevel = Convert.FromBase64String(Constants.Images.OrganizationLevel);
+            ms = new MemoryStream(strLevel);
+            var organizationLevel = System.Drawing.Image.FromStream(ms);
+            PictureBox organizationLevelPB = new PictureBox();
+            organizationLevelPB.Image = organizationLevel;
+            organizationLevelPB.SizeMode = PictureBoxSizeMode.CenterImage;
+
+            this.tbRoleDefinition.Controls.Add(noneAccessPB, 1, 0);
+            this.tbRoleDefinition.Controls.Add(userLevelPB, 1, 1);
+            this.tbRoleDefinition.Controls.Add(buLevelPB, 1, 2);
+            this.tbRoleDefinition.Controls.Add(childBuLevelPB, 1, 3);
+            this.tbRoleDefinition.Controls.Add(organizationLevelPB, 1, 4);
+        }
+        #endregion
         /// <summary>
         /// This event occurs when the plugin is closed
         /// </summary>
@@ -311,59 +360,6 @@ namespace Entity_Security_Plugin
             }
         }
 
-        private void Test()
-        {
-            WorkAsync(new WorkAsyncInfo
-            {
-                // Showing message until background work is completed
-                Message = "Retrieving WhoAmI Information",
-
-                // Main task which will be executed asynchronously
-                Work = (worker, args) =>
-                {
-                    //Saved code
-                    var query = new QueryExpression("privilege");
-                    query.ColumnSet = new ColumnSet(true);
-                    //query.Criteria.AddCondition(new ConditionExpression("name", ConditionOperator.Like, "%"+ selectedEntity + "%"));
-                    var privileges = Service.RetrieveMultiple(query).Entities.ToList();
-                    prvList = privileges.Where(t => t.Attributes["name"].ToString().Contains("prvAssign" + selectedEntity) ||
-                    t.Attributes["name"].ToString().Contains("prvShare" + selectedEntity) ||
-                    t.Attributes["name"].ToString().Contains("prvAppendTo" + selectedEntity) ||
-                    t.Attributes["name"].ToString().Contains("prvRead" + selectedEntity) ||
-                    t.Attributes["name"].ToString().Contains("prvDelete" + selectedEntity) ||
-                    t.Attributes["name"].ToString().Contains("prvCreate" + selectedEntity) ||
-                    t.Attributes["name"].ToString().Contains("prvWrite" + selectedEntity) ||
-                    t.Attributes["name"].ToString().Contains("prvAppend" + selectedEntity)).ToList();
-                    string jsonPrivileges = JsonConvert.SerializeObject(privileges);
-
-                    query = new QueryExpression("role");
-                    query.ColumnSet = new ColumnSet(true);
-                    var role = Service.RetrieveMultiple(query).Entities.ToList().Where(t => t.Attributes["name"].ToString().Equals("VF Showroom Sales Advisor") && t.Attributes["businessunitid"] != null).ToList();
-                    string jsonRole = JsonConvert.SerializeObject(role);
-
-                    List<Entity> relatedRoleprivileges = new List<Entity>();
-                    query = new QueryExpression("roleprivileges");
-                    query.ColumnSet = new ColumnSet(true);
-                    var roleprivileges = Service.RetrieveMultiple(query).Entities.ToList();
-
-                    relatedRoleprivileges.AddRange(roleprivileges.Where(t => t.Attributes["roleid"].ToString().Equals(role[0].Id)));
-                    string jsonrelatedRoleprivileges = JsonConvert.SerializeObject(relatedRoleprivileges);
-
-
-                    args.Result = null;
-                },
-
-                // Work is completed, results can be shown to user
-                PostWorkCallBack = (args) =>
-                {
-                    if (args.Error != null)
-                        MessageBox.Show(args.Error.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                    // Binding result data to ListBox Control
-                    //lst_UserData.DataSource = args.Result;
-                }
-            });
-        }
 
     }
 }
