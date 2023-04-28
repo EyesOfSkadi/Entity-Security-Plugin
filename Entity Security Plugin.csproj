@@ -262,8 +262,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\ExportExcel.cs" />
+    <Compile Include="Business\UpdatePermissions.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Constants\Images.cs" />
+    <Compile Include="Helper\SecurityHelper.cs" />
     <Compile Include="Models\SecurityPrv.cs" />
     <Compile Include="MyPlugin.cs" />
     <Compile Include="MyPluginControl.cs">

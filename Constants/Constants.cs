@@ -8,13 +8,14 @@ namespace Entity_Security_Plugin.Constants
 {
     public class PluginConstants
     {
+        //roleprivileges - privilegedepthmask
         public const string SLNoAccess = "";
         public const string SLUser = "1";
         public const string SLBusinessUnit = "2";
         public const string SLChildBusinessUnit = "4";
         public const string SLOrganization = "8";
 
-
+        //privilege - accessright
         public const string READ = "1";
         public const string WRITE = "2";
         public const string APPEND = "4";

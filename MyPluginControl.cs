@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.ServiceModel.Description;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Entity_Security_Plugin.Business;
+using Entity_Security_Plugin.Helper;
 using XrmToolBox.Extensibility;
 using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Sdk;
@@ -20,6 +23,12 @@ using Microsoft.Xrm.Sdk.Metadata;
 using Newtonsoft.Json;
 using Entity_Security_Plugin.Models;
 using XrmToolBox.Forms;
+using System.Windows.Controls;
+using Entity_Security_Plugin.Constants;
+using Microsoft.Xrm.Sdk.Client;
+using System.ServiceModel.Security;
+using Microsoft.Xrm.Tooling.Connector;
+using NuGet.Protocol.Plugins;
 
 namespace Entity_Security_Plugin
 {
@@ -64,7 +73,8 @@ namespace Entity_Security_Plugin
         {
             // The ExecuteMethod method handles connecting to an
             // organization if XrmToolBox is not yet connected
-            ExecuteMethod(GetAllEntities);
+            //ExecuteMethod(GetAllEntities);
+            ExecuteMethod(GetSecurityRole);
         }
 
         private void btnGetRoles_Click(object sender, EventArgs e)
@@ -282,6 +292,42 @@ namespace Entity_Security_Plugin
                     if (result != null)
                     {
                         MessageBox.Show($"Found {result.Entities.Count} accounts");
+                    }
+                }
+            });
+        }
+
+        private void GetSecurityRole()
+        {
+            WorkAsync(new WorkAsyncInfo
+            {
+                Message = "Getting Entities",
+
+                Work = (worker, args) =>
+                {
+                    var allbu = SecurityHelper.GetBusinessUnits(Service);
+                    var rootBU = allbu != null ? allbu.Entities.FirstOrDefault(t => !t.Attributes.Keys.Contains("parentbusinessunitid")) : null;
+                    if (rootBU != null)
+                    {
+                        var allRoles = SecurityHelper.GetSecurityRole(this.Service, rootBU.Id);
+
+                        var privileges = SecurityHelper.GetPrivileges(Service, new Guid[] { new Guid("{D58800F2-7D0F-E711-817B-00155D000FB4}") });
+                        var selectedPrivileges = privileges.Entities.FirstOrDefault(t =>
+                            t.Id == new Guid("{4becca44-c7c3-e911-a854-000d3a80e8cd}"));
+                        if (selectedPrivileges != null)
+                        {
+                            selectedPrivileges.Attributes["privilegedepthmask"] = Constants.PluginConstants.SLUser;
+
+                            //CrmServiceClient client = (CrmServiceClient)this.Service;
+                            ClientCredentials credentials = new ClientCredentials();
+                            credentials.UserName.UserName = "thanh.pham@vinfastdms.onmicrosoft.com";
+                            credentials.UserName.Password = "0x8b53c6F5cdAfed69283398925679862932574Df0";
+                            var orgServiceProxy = new OrganizationServiceProxy(new Uri(this.ConnectionDetail.OrganizationServiceUrl),
+                                null, credentials, null);
+
+                            orgServiceProxy.Update(selectedPrivileges);
+                        }
+
                     }
                 }
             });
