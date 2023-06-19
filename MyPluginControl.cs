@@ -29,6 +29,9 @@ using Microsoft.Xrm.Sdk.Client;
 using System.ServiceModel.Security;
 using Microsoft.Xrm.Tooling.Connector;
 using NuGet.Protocol.Plugins;
+using System.Net.Http.Headers;
+using System.Net.Http;
+using Microsoft.Xrm.Sdk.WebServiceClient;
 
 namespace Entity_Security_Plugin
 {
@@ -73,8 +76,7 @@ namespace Entity_Security_Plugin
         {
             // The ExecuteMethod method handles connecting to an
             // organization if XrmToolBox is not yet connected
-            //ExecuteMethod(GetAllEntities);
-            ExecuteMethod(GetSecurityRole);
+            ExecuteMethod(GetAllEntities);
         }
 
         private void btnGetRoles_Click(object sender, EventArgs e)
@@ -94,6 +96,11 @@ namespace Entity_Security_Plugin
             var filePath = new ExportExcel().Execute(this.tbRoles, cbEntities.SelectedValue.ToString());
             if (!string.IsNullOrEmpty(filePath))
                 MessageBox.Show("Done with :" + filePath);
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            ExecuteMethod(GetSecurityRole);
         }
         #endregion
 
@@ -303,32 +310,78 @@ namespace Entity_Security_Plugin
             {
                 Message = "Getting Entities",
 
-                Work = (worker, args) =>
+                Work = async (worker, args) =>
                 {
-                    var allbu = SecurityHelper.GetBusinessUnits(Service);
-                    var rootBU = allbu != null ? allbu.Entities.FirstOrDefault(t => !t.Attributes.Keys.Contains("parentbusinessunitid")) : null;
-                    if (rootBU != null)
+                    //var allbu = SecurityHelper.GetBusinessUnits(Service);
+                    //var rootBU = allbu != null ? allbu.Entities.FirstOrDefault(t => !t.Attributes.Keys.Contains("parentbusinessunitid")) : null;
+                    //if (rootBU != null)
+                    //{
+                    //    var allRoles = SecurityHelper.GetSecurityRole(this.Service, rootBU.Id);
+
+                    //    var privileges = SecurityHelper.GetPrivileges(Service, new Guid[] { new Guid("{D58800F2-7D0F-E711-817B-00155D000FB4}") });
+                    //    var selectedPrivileges = privileges.Entities.FirstOrDefault(t =>
+                    //        t.Id == new Guid("{f035099b-7ee5-ed11-8847-6045bd55e414}"));
+                    //    if (selectedPrivileges != null)
+                    //    {
+                    //        selectedPrivileges.Attributes["privilegedepthmask"] = Constants.PluginConstants.SLOrganization;
+
+                    //        var orgServiceProxy = new OrganizationServiceProxy(new Uri(this.ConnectionDetail.OrganizationServiceUrl),
+                    //            null, ConnectionDetail.ServiceClient.OrganizationWebProxyClient.ClientCredentials, null);
+
+                    //        orgServiceProxy.Update(selectedPrivileges);
+                    //    }
+                    //}
+
+                    //// Execute the request
+                    //AddPrivilegesRoleResponse response = (AddPrivilegesRoleResponse)crmServiceClient.Execute(request);
+                    var allconns = ConnectionManager.Instance.LoadConnectionsList();
+
+                    ConnectionDetail conn = allconns.Connections.FirstOrDefault(t=>t.ConnectionName==ConnectionDetail.ConnectionName);
+                    if (conn == null )
                     {
-                        var allRoles = SecurityHelper.GetSecurityRole(this.Service, rootBU.Id);
-
-                        var privileges = SecurityHelper.GetPrivileges(Service, new Guid[] { new Guid("{D58800F2-7D0F-E711-817B-00155D000FB4}") });
-                        var selectedPrivileges = privileges.Entities.FirstOrDefault(t =>
-                            t.Id == new Guid("{4becca44-c7c3-e911-a854-000d3a80e8cd}"));
-                        if (selectedPrivileges != null)
-                        {
-                            selectedPrivileges.Attributes["privilegedepthmask"] = Constants.PluginConstants.SLUser;
-
-                            //CrmServiceClient client = (CrmServiceClient)this.Service;
-                            ClientCredentials credentials = new ClientCredentials();
-                            credentials.UserName.UserName = "thanh.pham@vinfastdms.onmicrosoft.com";
-                            credentials.UserName.Password = "0x8b53c6F5cdAfed69283398925679862932574Df0";
-                            var orgServiceProxy = new OrganizationServiceProxy(new Uri(this.ConnectionDetail.OrganizationServiceUrl),
-                                null, credentials, null);
-
-                            orgServiceProxy.Update(selectedPrivileges);
-                        }
-
+                        MessageBox.Show("Please connect to a valid Dynamics 365 instance first.");
+                        return;
                     }
+
+                    CrmServiceClient crmServiceClient = ConnectionDetail.ServiceClient;
+
+                    // Set the request parameters
+                    //AddPrivilegesRoleRequest requestadd = new AddPrivilegesRoleRequest();
+                    //requestadd.RoleId = new Guid("D58800F2-7D0F-E711-817B-00155D000FB4");
+                    //requestadd.Privileges = new[] { new RolePrivilege
+                    //{
+                    //    PrivilegeId = new Guid("4b9629d8-ec5a-4125-bc25-305ea8dc69ed"),
+                    //    Depth = PrivilegeDepth.Global
+                    //}};
+
+                    //// Execute the request
+                    //AddPrivilegesRoleResponse responseadd = (AddPrivilegesRoleResponse)crmServiceClient.Execute(requestadd);
+
+                    RetrieveRolePrivilegesRoleRequest request = new RetrieveRolePrivilegesRoleRequest();
+                    request.RoleId = new Guid("{D58800F2-7D0F-E711-817B-00155D000FB4}");
+                    RetrieveRolePrivilegesRoleResponse response = (RetrieveRolePrivilegesRoleResponse)crmServiceClient.Execute(request);
+
+                    RetrieveRolePrivilegesRoleRequest request1 = new RetrieveRolePrivilegesRoleRequest();
+                    request1.RoleId = new Guid("{94eb69fc-0cc1-e911-a850-000d3a80e227}");
+                    RetrieveRolePrivilegesRoleResponse response1 = (RetrieveRolePrivilegesRoleResponse)crmServiceClient.Execute(request1);
+
+                    //RetrieveRequest request = new RetrieveRequest();
+                    //request.Target = new EntityReference("privilege", new Guid("aae54441-a89d-4524-8589-19895bcffc2c"));
+                    //request.ColumnSet = new ColumnSet(allColumns: true);
+                    //RetrieveResponse response = (RetrieveResponse)crmServiceClient.Execute(request);
+
+                    RetrieveMultipleRequest requestmul = new RetrieveMultipleRequest();
+                    var query = new QueryExpression("privilege");
+                    query.ColumnSet = new ColumnSet("privilegeid", "name");
+                    requestmul.Query = query;
+                    RetrieveMultipleResponse responsemul = (RetrieveMultipleResponse)crmServiceClient.Execute(requestmul);
+                    var wc = responsemul.EntityCollection.Entities.Where(t => t.Attributes["name"].ToString().Contains("warrantyclaim")).ToList();
+
+                    //RetrieveRolePrivilegesRoleRequest requestrp = new RetrieveRolePrivilegesRoleRequest();
+                    //requestrp.RoleId= new Guid("D58800F2-7D0F-E711-817B-00155D000FB4");
+                    //RetrieveRolePrivilegesRoleResponse responserp =  (RetrieveRolePrivilegesRoleResponse)crmServiceClient.Execute(requestrp); 
+
+                    Console.WriteLine("Passed");
                 }
             });
         }
@@ -405,7 +458,6 @@ namespace Entity_Security_Plugin
                 LogInfo("Connection has changed to: {0}", detail.WebApplicationUrl);
             }
         }
-
 
     }
 }

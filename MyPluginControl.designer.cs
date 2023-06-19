@@ -59,6 +59,7 @@
             this.cbEntities = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripMenu.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabSecurities.SuspendLayout();
@@ -76,10 +77,11 @@
             this.tssSeparator1,
             this.tsbGetData,
             this.toolStripSeparator1,
-            this.btnExport});
+            this.btnExport,
+            this.toolStripButton1});
             this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
             this.toolStripMenu.Name = "toolStripMenu";
-            this.toolStripMenu.Size = new System.Drawing.Size(1385, 31);
+            this.toolStripMenu.Size = new System.Drawing.Size(1038, 25);
             this.toolStripMenu.TabIndex = 4;
             this.toolStripMenu.Text = "toolStrip1";
             // 
@@ -89,14 +91,14 @@
             this.tsbClose.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsbClose.Image = ((System.Drawing.Image)(resources.GetObject("tsbClose.Image")));
             this.tsbClose.Name = "tsbClose";
-            this.tsbClose.Size = new System.Drawing.Size(49, 28);
+            this.tsbClose.Size = new System.Drawing.Size(40, 22);
             this.tsbClose.Text = "Close";
             this.tsbClose.Click += new System.EventHandler(this.tsbClose_Click);
             // 
             // tssSeparator1
             // 
             this.tssSeparator1.Name = "tssSeparator1";
-            this.tssSeparator1.Size = new System.Drawing.Size(6, 31);
+            this.tssSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // tsbGetData
             // 
@@ -105,14 +107,14 @@
             this.tsbGetData.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tsbGetData.Image = ((System.Drawing.Image)(resources.GetObject("tsbGetData.Image")));
             this.tsbGetData.Name = "tsbGetData";
-            this.tsbGetData.Size = new System.Drawing.Size(72, 28);
+            this.tsbGetData.Size = new System.Drawing.Size(56, 22);
             this.tsbGetData.Text = "Get Data";
             this.tsbGetData.Click += new System.EventHandler(this.tbsGetData_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 31);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // btnExport
             // 
@@ -121,7 +123,7 @@
             this.btnExport.Image = ((System.Drawing.Image)(resources.GetObject("btnExport.Image")));
             this.btnExport.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(56, 28);
+            this.btnExport.Size = new System.Drawing.Size(45, 22);
             this.btnExport.Text = "Export";
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
@@ -138,33 +140,32 @@
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(0, 40, 0, 0);
+            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(0, 32, 0, 0);
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1385, 432);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1038, 350);
             this.tableLayoutPanel1.TabIndex = 11;
             // 
             // tabSecurities
             // 
             this.tabSecurities.Controls.Add(this.tabPage1);
             this.tabSecurities.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabSecurities.Location = new System.Drawing.Point(431, 44);
-            this.tabSecurities.Margin = new System.Windows.Forms.Padding(4);
+            this.tabSecurities.Location = new System.Drawing.Point(323, 35);
             this.tabSecurities.Name = "tabSecurities";
             this.tabSecurities.SelectedIndex = 0;
-            this.tabSecurities.Size = new System.Drawing.Size(950, 384);
+            this.tabSecurities.Size = new System.Drawing.Size(712, 312);
             this.tabSecurities.TabIndex = 10;
             // 
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
             this.tabPage1.Controls.Add(this.tbRoles);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Size = new System.Drawing.Size(942, 355);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Size = new System.Drawing.Size(704, 286);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Security Roles";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -189,14 +190,13 @@
             this.clAssign,
             this.clShare});
             this.tbRoles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbRoles.Location = new System.Drawing.Point(4, 4);
-            this.tbRoles.Margin = new System.Windows.Forms.Padding(4);
+            this.tbRoles.Location = new System.Drawing.Point(3, 3);
             this.tbRoles.Name = "tbRoles";
             this.tbRoles.ReadOnly = true;
             this.tbRoles.RowHeadersWidth = 51;
             this.tbRoles.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbRoles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.tbRoles.Size = new System.Drawing.Size(934, 347);
+            this.tbRoles.Size = new System.Drawing.Size(698, 280);
             this.tbRoles.TabIndex = 0;
             // 
             // clRole
@@ -207,7 +207,6 @@
             this.clRole.MinimumWidth = 6;
             this.clRole.Name = "clRole";
             this.clRole.ReadOnly = true;
-            this.clRole.Width = 123;
             // 
             // clCreate
             // 
@@ -289,10 +288,9 @@
             this.panel1.Controls.Add(this.cbEntities);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(4, 44);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
+            this.panel1.Location = new System.Drawing.Point(3, 35);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(419, 315);
+            this.panel1.Size = new System.Drawing.Size(314, 256);
             this.panel1.TabIndex = 9;
             // 
             // tbRoleDefinition
@@ -308,7 +306,8 @@
             this.tbRoleDefinition.Controls.Add(this.label4, 0, 2);
             this.tbRoleDefinition.Controls.Add(this.label5, 0, 3);
             this.tbRoleDefinition.Controls.Add(this.label6, 0, 4);
-            this.tbRoleDefinition.Location = new System.Drawing.Point(11, 89);
+            this.tbRoleDefinition.Location = new System.Drawing.Point(8, 72);
+            this.tbRoleDefinition.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tbRoleDefinition.Name = "tbRoleDefinition";
             this.tbRoleDefinition.RowCount = 5;
             this.tbRoleDefinition.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
@@ -316,16 +315,17 @@
             this.tbRoleDefinition.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tbRoleDefinition.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tbRoleDefinition.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tbRoleDefinition.Size = new System.Drawing.Size(239, 163);
+            this.tbRoleDefinition.Size = new System.Drawing.Size(179, 132);
             this.tbRoleDefinition.TabIndex = 1;
             // 
             // label3
             // 
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 40);
+            this.label3.Location = new System.Drawing.Point(2, 32);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(85, 16);
+            this.label3.Size = new System.Drawing.Size(70, 13);
             this.label3.TabIndex = 10;
             this.label3.Text = "1. User Level";
             // 
@@ -333,9 +333,10 @@
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 8);
+            this.label2.Location = new System.Drawing.Point(2, 6);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(86, 16);
+            this.label2.Size = new System.Drawing.Size(71, 13);
             this.label2.TabIndex = 0;
             this.label2.Text = "0. No Access";
             // 
@@ -343,9 +344,10 @@
             // 
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 72);
+            this.label4.Location = new System.Drawing.Point(2, 58);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(137, 16);
+            this.label4.Size = new System.Drawing.Size(112, 13);
             this.label4.TabIndex = 11;
             this.label4.Text = "2. Business Unit Level";
             // 
@@ -353,9 +355,10 @@
             // 
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 104);
+            this.label5.Location = new System.Drawing.Point(2, 84);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(170, 16);
+            this.label5.Size = new System.Drawing.Size(138, 13);
             this.label5.TabIndex = 11;
             this.label5.Text = "3. Child Business Unit Level";
             // 
@@ -363,9 +366,10 @@
             // 
             this.label6.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 137);
+            this.label6.Location = new System.Drawing.Point(2, 111);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(95, 16);
+            this.label6.Size = new System.Drawing.Size(78, 13);
             this.label6.TabIndex = 11;
             this.label6.Text = "4. Organization";
             // 
@@ -373,10 +377,9 @@
             // 
             this.btnGetRoles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGetRoles.Location = new System.Drawing.Point(280, 18);
-            this.btnGetRoles.Margin = new System.Windows.Forms.Padding(4);
+            this.btnGetRoles.Location = new System.Drawing.Point(210, 15);
             this.btnGetRoles.Name = "btnGetRoles";
-            this.btnGetRoles.Size = new System.Drawing.Size(100, 24);
+            this.btnGetRoles.Size = new System.Drawing.Size(75, 20);
             this.btnGetRoles.TabIndex = 9;
             this.btnGetRoles.Text = "Get Roles";
             this.btnGetRoles.UseVisualStyleBackColor = true;
@@ -387,10 +390,9 @@
             this.cbEntities.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbEntities.FormattingEnabled = true;
-            this.cbEntities.Location = new System.Drawing.Point(64, 18);
-            this.cbEntities.Margin = new System.Windows.Forms.Padding(4);
+            this.cbEntities.Location = new System.Drawing.Point(48, 15);
             this.cbEntities.Name = "cbEntities";
-            this.cbEntities.Size = new System.Drawing.Size(207, 24);
+            this.cbEntities.Size = new System.Drawing.Size(156, 21);
             this.cbEntities.TabIndex = 6;
             // 
             // label1
@@ -398,10 +400,9 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 22);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(6, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(42, 16);
+            this.label1.Size = new System.Drawing.Size(36, 13);
             this.label1.TabIndex = 7;
             this.label1.Text = "Entity:";
             // 
@@ -418,18 +419,27 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(200, 100);
             this.tableLayoutPanel2.TabIndex = 10;
             // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(31, 22);
+            this.toolStripButton1.Text = "Test";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
             // MyPluginControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.toolStripMenu);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MyPluginControl";
-            this.Size = new System.Drawing.Size(1385, 432);
+            this.Size = new System.Drawing.Size(1038, 350);
             this.Load += new System.EventHandler(this.MyPluginControl_Load);
             this.toolStripMenu.ResumeLayout(false);
             this.toolStripMenu.PerformLayout();
@@ -478,6 +488,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
         // private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }
